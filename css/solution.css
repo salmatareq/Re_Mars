@@ -1,0 +1,100 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #0e0e0e;
+  color: white;
+  padding: 20px;
+   background-image: url(/images/pic3.jpeg);
+   background-repeat: no-repeat;
+   background-size:cover;
+   background-position: center;
+}
+.container{
+    position: relative;
+  
+   width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+     margin-top: 90px;
+}
+.timeline {
+  position: relative;
+ 
+  width: 2px;
+  background: #555;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.stage {
+  position: relative;
+  margin: 100px 0;
+  text-align: center;
+}
+
+
+.timeline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: 4px;
+  background: #444;
+}
+
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #333;
+  border: 2px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.stage.active .circle {
+  box-shadow: 0 0 20px 5px #80270b;
+  border-color: #7c421e;
+}
+
+
+
+.content {
+  position: absolute;
+  width: 350px;
+  padding: 10px 15px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  display: none;
+}
+
+.stage:nth-child(odd) .content {
+  position: absolute;
+  left: 50px;
+  text-align: left;
+}
+
+.stage:nth-child(even) .content {
+ position: absolute;
+  right: 50px;
+  text-align: left;
+}
+
+.stage.active .content {
+  display: block;
+}

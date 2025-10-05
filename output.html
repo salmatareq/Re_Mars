@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mars ReFab Hub — Output Cards</title>
+        <link rel="stylesheet" href="css\style.css">
+    <style>
+      :root {
+        --bg: #000000;
+        --card: #0f1724;
+        --accent: #80270b;
+        --muted: #9aa4b2;
+        --glass: rgba(255, 255, 255, 0.04);
+        --card-w: 320px;
+        --card-h: 420px;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #1a1a1a;
+     background-repeat: no-repeat;
+     background-size:cover;
+     background-position: center;
+    
+        /* background: linear-gradient(180deg, #000000 0%, #32170c 60%); */
+        color: #e6eef6;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px;
+      }
+    body::before {
+  content: "";
+  position: fixed; /* يفضل fixed عشان يثبت مع السكرول */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.585); /* درجة الغمقان */
+  z-index: 0; /* يكون خلف كل العناصر */
+
+}
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 28px;
+        width: 100%;
+        max-width: 1180px;
+      }
+
+      .card {
+        width: var(--card-w);
+        height: var(--card-h);
+        perspective: 1000px;
+        margin: auto;
+      }
+      .back h3{
+        text-align: center;
+      }
+      .inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.2, 0.9, 0.3, 1);
+        background: linear-gradient(
+          180deg,
+          rgba(20, 8, 6, 0.7),
+          rgba(24, 10, 8, 0.9)
+        );
+        border-radius: 10px;
+      }
+      .card:hover .inner,
+      .card.flip .inner {
+        transform: rotateY(-180deg);
+      }
+
+      .face {
+        position: absolute;
+        inset: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        backface-visibility: hidden;
+        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+        display: flex;
+        flex-direction: column;
+        
+      }
+      .back:hover{
+          box-shadow: 0 0 20px 5px #80270b;
+      }
+      .front {
+        background: linear-gradient(
+          180deg,
+          rgba(48, 38, 38, 0.781),
+          rgba(255, 255, 255, 0.041)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .back {
+        transform: rotateY(-180deg);
+        background: linear-gradient(
+          180deg,
+          rgba(20, 8, 6, 0.7),
+          rgba(24, 10, 8, 0.9)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 18px;
+        gap: 50px;
+        display: flex;
+        flex-direction: column;
+            justify-content:flex-start;
+      }
+
+      .thumb {
+        height: 170px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 123, 0, 0.12),
+          rgba(120, 60, 200, 0.06)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .thumb svg {
+        width: 120px;
+        height: 120px;
+        opacity: 0.95;
+      }
+
+      .title {
+        padding: 14px 18px 6px;
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+      .subtitle {
+        padding: 0 18px 12px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .meta {
+        margin-top: auto;
+        padding: 12px 18px 18px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .pill {
+        background: var(--glass);
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 0.86rem;
+        color: var(--muted);
+      }
+      .btn {
+        margin-left: auto;
+        background: var(--accent);
+        color: #071022;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      /* Back content */
+      .inputs {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .input-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .input-name {
+        font-size: 0.95rem;
+      }
+      .process-link {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .prosses{
+        display: flex;
+        flex-direction: row;
+        /* bottom: -120px; */
+        position: relative;
+        
+      }
+
+      /* responsive */
+      @media (max-width: 420px) {
+        :root {
+          --card-w: 92vw;
+          --card-h: 420px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+      <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="RE MARS Logo">
+        </a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="problem.html">Problem</a>
+            <a href="solution.html">Main Idea</a>
+               <a href="output.html">OUtput</a>
+            <a href="about.html">About Us</a>
+        </nav>
+    </header>
+    <div style="width: 100%; max-width: 1180px">
+      <h1
+        style="
+          font-weight: 800;
+          margin-top: 80px ;
+          font-size: 20px;
+         
+        "
+      >
+        Mars ReFab Hub — Output Ideas
+      </h1>
+      <p style="color: var(--muted); text-align: left; margin: 0 0 22px">
+        <br>
+      </p>
+
+      <div class="grid">
+        <!-- Card 1: Paper-Regolith Brick -->
+        <div class="card" onclick="this.classList.toggle('flip')">
+  <div class="inner">
+    <div class="face front">
+      <div class="thumb">
+        <!-- SVG placeholder -->
+        <svg
+          viewBox="0 0 64 64"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect
+            x="6"
+            y="18"
+            width="52"
+            height="28"
+            rx="2"
+            fill="#ffffff"
+            opacity="0.06"
+          />
+          <path
+            d="M10 22h44"
+            stroke="#ff7b00"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+      <div class="title">Recast Kitchen Utensils</div>
+      <div class="subtitle">
+        Durable spoons, cups, and trays made by melting and reshaping leftover aluminum frames and metal scraps from other modules.
+      </div>
+      <div class="meta">
+        <div class="pill">Use: Everyday tools for Mars habitat kitchens</div>
+      </div>
+    </div>
+
+    <div class="face back">
+      <h3 style="margin: 0 0 8px">Inputs</h3>
+      <div class="inputs">
+        <div class="input-row">
+          <div class="icon">1</div>
+          <div class="input-name">Aluminum frames and metallic scraps (melted down)</div>
+        </div>
+        <div class="input-row">
+          <div class="icon">2</div>
+          <div class="input-name">Thermal furnace for metal smelting</div>
+        </div>
+        <div class="input-row">
+          <div class="icon">3</div>
+          <div class="input-name">3D molds or pressing tools for reshaping</div>
+        </div>
+        <div class="input-row">
+          <div class="icon">4</div>
+          <div class="input-name">Protective gear & cooling setup</div>
+        </div>
+      </div>
+      <!-- <div class="prosses">
+        <a class="process-link" href="#utensils-process">Process steps →</a>
+        <a class="btn" href="#utensils-process">View</a>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+        <!-- Card 2: Foam Insulation Panel -->
+        <div class="card" onclick="this.classList.toggle('flip')">
+          <div class="inner">
+            <div class="face front">
+              <div class="thumb">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="32" cy="28" r="18" fill="#fff" opacity="0.05" />
+                  <path
+                    d="M22 34h20"
+                    stroke="#ff7b00"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <div class="title">Insulation Foam Panel</div>
+              <div class="subtitle">
+Recycled foam and textile waste combined to form warm, lightweight wall panels
+              </div>
+              <div class="meta">
+                <div class="pill">Use: Insulation / Comfort</div>
+              
+              </div>
+            </div>
+            <div class="face back">
+              <h3 style="margin: 0 0 8px">Inputs </h3>
+              <div class="inputs">
+                <div class="input-row">
+                  <div class="icon">1</div>
+                  <div class="input-name">
+                    Foam packaging (Zotek / Plastazote)
+                  </div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">2</div>
+                  <div class="input-name">Textile scraps (covering)</div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">3</div>
+                  <div class="input-name">
+                    Minimal adhesive / mechanical fasteners
+                  </div>
+                </div>
+              </div>
+           <!-- <div class="prosses">
+              <a class="process-link" href="#brick-process">Process steps →</a>
+                <a class="btn" href="#brick-process">View</a>
+            </div> -->
+           </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Carbon Filter -->
+       <div class="card" onclick="this.classList.toggle('flip')">
+  <div class="inner">
+    <div class="face front">
+      <div class="thumb">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect
+            x="8"
+            y="12"
+            width="48"
+            height="40"
+            rx="6"
+            fill="#fff"
+            opacity="0.04"
+          />
+          <path
+            d="M18 26h28"
+            stroke="#ff7b00"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+      <div class="title">Carbon-Based Filter</div>
+      <div class="subtitle">
+        Air & water purification system made from mission carbon residues and paper waste
+      </div>
+      <div class="meta">
+        <div class="pill">Use: Filtration</div>
+      </div>
+    </div>
+
+    <div class="face back">
+      <h3 style="margin: 0 0 8px">Inputs</h3>
+      <div class="inputs">
+        <div class="input-row">
+          <div class="icon">1</div>
+          <div class="input-name">
+            Carbon residue generated from astronauts’ oxygen extraction experiments
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="icon">2</div>
+          <div class="input-name">
+            Paper/Cardboard waste (used as biochar feedstock)
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="icon">3</div>
+          <div class="input-name">
+            Minimal water for activation and washing
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="prosses">
+        <a class="process-link" href="#brick-process">Process steps →</a>
+        <a class="btn" href="#brick-process">View</a>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+        <!-- Card 4: Recycled Plastic Filament -->
+        <div class="card" onclick="this.classList.toggle('flip')">
+          <div class="inner">
+            <div class="face front">
+              <div class="thumb">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 18h40v28H12z" fill="#fff" opacity="0.03" />
+                  <path d="M20 36h24" stroke="#ff7b00" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="title">Recycled Plastic Filament</div>
+              <div class="subtitle">
+                3D-printable filament for small tools & holders.
+              </div>
+              <div class="meta">
+                <div class="pill">Use: Tools / Small parts</div>
+               
+              </div>
+            </div>
+            <div class="face back">
+              <h3 style="margin: 0 0 8px">Inputs </h3>
+              <div class="inputs">
+                <div class="input-row">
+                  <div class="icon">1</div>
+                  <div class="input-name">Food-grade plastic pouches</div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">2</div>
+                  <div class="input-name">Nitrile / EVA scraps</div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">3</div>
+                  <div class="input-name">Small heating extruder</div>
+                </div>
+              </div>
+          <!-- <div class="prosses">
+              <a class="process-link" href="#brick-process">Process steps →</a>
+                <a class="btn" href="#brick-process">View</a>
+            </div>  -->
+           </div>
+          </div>
+        </div>
+         <!-- Card 5: Recycled Plastic Filament -->
+          <div class="card" onclick="this.classList.toggle('flip')">
+          <div class="inner">
+            <div class="face front">
+              <div class="thumb">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 18h40v28H12z" fill="#fff" opacity="0.03" />
+                  <path d="M20 36h24" stroke="#ff7b00" stroke-width="2" />
+                </svg>
+              </div>
+              <div class="title">Paper Composite Board</div>
+              <div class="subtitle">
+             Pressed paper pulp mixed with natural starch to form rigid boards for furniture and flooring.  </div>
+              <div class="meta">
+                <div class="pill">Use: Habitat interiors & lab tables</div>
+               
+              </div>
+            </div>
+            <div class="face back">
+              <h3 style="margin: 0 0 8px">Inputs </h3>
+              <div class="inputs">
+                <div class="input-row">
+                  <div class="icon">1</div>
+                  <div class="input-name">Paper & cardboard waste</div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">2</div>
+                  <div class="input-name">Small amount of water</div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">3</div>
+                  <div class="input-name">Starch / plant glue</div>
+                </div>
+                <div class="input-row">
+                  <div class="icon">4</div>
+                  <div class="input-name">Small amount of water</div>
+                </div>
+              </div>
+          <!-- <div class="prosses">
+              <a class="process-link" href="#brick-process">Process steps →</a>
+                <a class="btn" href="#brick-process">View</a>
+            </div>  -->
+           </div>
+          </div>
+        </div>
+      </div>
+
+     
+    <script>
+      // optional: close flips when clicking outside on small screens
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".card"))
+          document
+            .querySelectorAll(".card.flip")
+            .forEach((c) => c.classList.remove("flip"));
+      });
+    </script>
+    <script src="./js/solution.js"></script>
+  </body>
+</html>
